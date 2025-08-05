@@ -1,0 +1,85 @@
+from tkinter import * #tkinter import
+import cv2 #Computer Vision import
+
+#GUI where the image will be displayed, CHECK
+#A button to resize from small, medium and large CHECK
+#Resizes image to small, medium and large sizes CHECK
+#An option to resize an image with Greyscale conversion and display it in a GUI CHECK
+# Where Button clicked but not checked = Resize only CHECK
+# Button clicked and CHECKED = RESIZE AND GREY 
+
+root = Tk() # the root window 
+root.title("Image Resizer") # title of the window
+
+#CV import cv2 
+image_path = 'wallpaper.png' # path to the image, CHANGABLE
+image = cv2.imread(image_path) # read the image
+
+if image is None: # check if the image is loaded
+    print(f"Error: Could not read image from {image_path}")
+    exit()
+print("Image has loaded successfully.")
+
+sizes = { # sizes dictionary for resizing, button activated
+    'small' : (200, 200), 
+    'medium': (400, 400),
+    'large' : (600, 600)
+}
+
+#BUTTON FUNCTIONS
+# Functions to handle button clicks for resizing images
+def myClickSmall(): #click function for small size
+    resized = cv2.resize(image, sizes['small']) # resize the image to small size
+    if grey_var.get():
+        resized = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+        cv2.imshow("Small Image (Greyscale)", resized) # display the resized image in greyscale
+        print("Image resized to 200x200 and converted to Greyscale")
+    else:
+        cv2.imshow("Small Image", resized) # display the resized image
+        print("Image resized to 200x200 and saved as small_image.png")
+
+def myClickMedium(): #click function for medium size
+    resized = cv2.resize(image, sizes['medium']) # resize the image to medium size
+    if grey_var.get():
+        resized = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+        cv2.imshow("Small Image (Greyscale)", resized) # display the resized image in greyscale
+        print("Image resized to 400x400 and converted to Greyscale")
+    else:
+        cv2.imshow("Small Image", resized) # display the resized image
+        print("Image resized to 400x400")
+
+def myClickLarge(): #click function for large
+    resized = cv2.resize(image, sizes['large']) # resize the image to large size
+    if grey_var.get():
+        resized = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+        cv2.imshow("Small Image (Greyscale)", resized) # display the resized image in greyscale
+        print("Image resized to 600x600 and converted to Greyscale")
+    else:
+        cv2.imshow("Small Image", resized) # display the resized image
+        print("Image resized to 600x600 and saved as small_image.png")
+
+#GUI LAYOUT
+# original image will be displayed in the GUI
+cv2.imshow("Original Image", image) # display the original image
+
+# Labels for the buttons
+label1 = Label(root, text="Resize Image") # Label for the title
+label1.grid(row=0, column=1, columnspan=3) # position of the label in the grid
+label2 = Label(root, text="The Original image has been loaded, Choose size:") # Label for the size options
+label2.grid(row=1, column=1, columnspan=3) # position of the label in the grid
+
+#Buttons
+myButton = Button(root, text="Small", padx = 25, pady = 5, command=myClickSmall) # Button to trigger myClick function
+myButton.grid(row=2, column=1)
+myButton = Button(root, text="Medium", padx = 25, pady = 5, command=myClickMedium) # Button SHOW ONLY 
+myButton.grid(row=2, column=2)
+myButton = Button(root, text="Large", padx = 25, pady = 5, command=myClickLarge) # Button SHOW ONLY 
+myButton.grid(row=2, column=3)
+
+#Checkbox for Greyscale conversion
+grey_var = IntVar() # Variable to store the state of the checkbox 
+grey_checkbox = Checkbutton(root, text="Convert to Greyscale", variable=grey_var) # Checkbox for greyscale conversion
+grey_checkbox.grid(row=3, column=1, columnspan=2) # position of the checkbox in the grid
+
+# Grid layout for Button and Checkbox
+root.mainloop()
